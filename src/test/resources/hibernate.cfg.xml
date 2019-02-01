@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.url">jdbc:xugu://192.168.2.76:5151/SYSTEM</property>
+		<property name="hibernate.connection.driver_class">com.xugu.cloudjdbc.Driver</property>
+		<property name="hibernate.connection.password">SYSDBA</property>
+		<property name="hibernate.connection.username">SYSDBA</property>
+		<property name="hibernate.dialect">com.xugu.dialect.XuguDialect4</property>
+		<property name="hibernate.show_sql">true</property>
+		<!-- <property name="hibernate.format_sql">true</property> -->
+		<!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+		<!-- <property name="hibernate.cache.use_second_level_cache">true</property> 
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> --> 
+		<!-- 开启使用查询缓存 --> 
+		<!-- <property name="cache.use_query_cache">true</property> -->
+		<mapping resource="User.hbm.xml" />
+		<mapping resource="Identity.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
