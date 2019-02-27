@@ -12,6 +12,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 import org.junit.Test;
+import org.hibernate.criterion.Projections;
 
 /**
  * 数据库表Dml操作
@@ -28,7 +29,7 @@ public class DatabaseDmlTest {
 	/**
 	 * 插入表数据
 	 */
-	@Test
+	//@Test
 	public void testInsert() {
 
 		// 创建工厂
@@ -59,7 +60,7 @@ public class DatabaseDmlTest {
 	/**
 	 * 查询表数据
 	 */
-	@ Test
+	//@ Test
 	public void testSelect() {
 
 		// 创建工厂
@@ -85,7 +86,7 @@ public class DatabaseDmlTest {
 	/**
 	 * 更新表数据
 	 */
-	@Test
+	//@Test
 	public void testUpdate() {
 
 		// 创建工厂
@@ -121,7 +122,7 @@ public class DatabaseDmlTest {
 	/**
 	 * 删除表数据
 	 */
-	@Test
+	//@Test
 	public void testDelete() {
 
 		// 创建工厂
@@ -151,6 +152,30 @@ public class DatabaseDmlTest {
 		session.delete(user);
 		tx.commit();
 		logger.info("删除数据(删除后): " + user);
+		session.close();
+		sessionFaction.close();
+	}
+	
+	/**
+	 * 测试获取表的数据量
+	 */
+	@Test
+	public void testTaleCount() {
+
+		// 创建工厂
+		SessionFactory sessionFaction = null;
+		// 加载
+		Configuration configuration = new Configuration().configure();
+		ServiceRegistry serviceRegistry = configuration.getStandardServiceRegistryBuilder().build();
+		// 创建Session工厂
+		sessionFaction = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
+		// 创建、打开会话
+		Session session = sessionFaction.openSession();
+		
+		// 指定条件查询
+		Object ret = session.createCriteria(User.class).setProjection(Projections.rowCount()).uniqueResult();
+		
+		logger.info("返回数据条数: " + ret);
 		session.close();
 		sessionFaction.close();
 	}

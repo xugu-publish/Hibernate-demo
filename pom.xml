@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.xugu</groupId>
 			<artifactId>cloudjdbc</artifactId>
-			<version>10.2</version>
+			<version>10.2.0.1</version>
 		</dependency>
 
 		<dependency>
