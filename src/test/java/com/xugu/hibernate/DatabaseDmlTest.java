@@ -156,27 +156,4 @@ public class DatabaseDmlTest {
 		sessionFaction.close();
 	}
 	
-	/**
-	 * 测试获取表的数据量
-	 */
-	@Test
-	public void testTaleCount() {
-
-		// 创建工厂
-		SessionFactory sessionFaction = null;
-		// 加载
-		Configuration configuration = new Configuration().configure();
-		ServiceRegistry serviceRegistry = configuration.getStandardServiceRegistryBuilder().build();
-		// 创建Session工厂
-		sessionFaction = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
-		// 创建、打开会话
-		Session session = sessionFaction.openSession();
-		
-		// 指定条件查询
-		Object ret = session.createCriteria(User.class).setProjection(Projections.rowCount()).uniqueResult();
-		
-		logger.info("返回数据条数: " + ret);
-		session.close();
-		sessionFaction.close();
-	}
 }
