@@ -173,7 +173,7 @@ public class DatabaseDmlTest {
 		Session session = sessionFaction.openSession();
 		
 		// 指定条件查询
-		Object ret = session.createCriteria(User.class).setProjection(Projections.rowCount()).uniqueResult();
+		Integer ret = (Integer)session.createCriteria(User.class).setProjection(Projections.rowCount()).uniqueResult();
 		
 		logger.info("返回数据条数: " + ret);
 		session.close();
