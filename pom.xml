@@ -49,12 +49,15 @@
 			<artifactId>cloudjdbc</artifactId>
 			<version>10.2.0.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.xugu</groupId>
 			<artifactId>XuGuDialect</artifactId>
 			<version>4.0</version>
 		</dependency>
-
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-c3p0</artifactId>
+		    <version>5.4.1.Final</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -3,8 +3,9 @@
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<property name="hibernate.connection.url">jdbc:xugu://192.168.2.76:5151/SYSTEM</property>
+        <!-- 加载数据库 -->
 		<property name="hibernate.connection.driver_class">com.xugu.cloudjdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:xugu://192.168.2.76:5151/SYSTEM</property>
 		<property name="hibernate.connection.password">SYSDBA</property>
 		<property name="hibernate.connection.username">SYSDBA</property>
 		<property name="hibernate.dialect">com.xugu.dialect.XuguDialect4</property>
@@ -15,7 +16,18 @@
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> --> 
 		<!-- 开启使用查询缓存 --> 
 		<!-- <property name="cache.use_query_cache">true</property> -->
-		<mapping resource="User.hbm.xml" />
-		<mapping resource="Identity.hbm.xml" />
+		<!-- 数据库连接池的使用 -->
+		<!-- 选择使用C3P0连接池 -->
+		<property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+		<!-- 连接池中最小连接数 -->
+		<property name="hibernate.c3p0.min_size">5</property>
+		<!-- 连接池中最大连接数 -->
+		<property name="hibernate.c3p0.max_size">20</property>
+		<!-- 设定数据库连接超时时间，以秒为单位。如果连接池中某个数据库连接处于空闲状态且超过timeout秒时，就会从连接池中移除-->
+		<property name="hibernate.c3p0.timeout">120</property>
+		<!-- 设置数据库 -->
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<mapping resource="mapper/User.hbm.xml" />
+		<mapping resource="mapper/Identity.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

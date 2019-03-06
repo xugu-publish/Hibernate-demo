@@ -1,4 +1,4 @@
-package com.xugu.hibernate;
+package entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;//引入这个类就正确了
@@ -45,7 +45,7 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	User() {
+	public User() {
 	}
 
 	User(String id, String name, String password) {

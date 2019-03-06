@@ -1,4 +1,4 @@
-package com.xugu.hibernate;
+package entity;
 
 import java.math.BigDecimal;
 

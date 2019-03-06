@@ -1,4 +1,4 @@
-package com.xugu.hibernate;
+package mapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +12,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.service.ServiceRegistry;
 import org.junit.Test;
+
+import entity.Identity;
 
 /**
  * 数据库表自增

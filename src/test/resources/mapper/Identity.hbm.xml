@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.xugu.hibernate.Identity" table="IDTY">
+    <class name="entity.Identity" table="IDTY">
         <!-- 要求：1.数据库端设置id为integer identity 2.generator class类型设置为identity -->
         <id name="id" type="integer">
             <column name="ID"  scale="0"/>

@@ -1,4 +1,4 @@
-package com.xugu.hibernate;
+package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,7 @@ public class Identity {
 		this.name = name;
 	}
 
-	Identity() {
+	public Identity() {
 	}
 	
 	Identity(Integer id, String name) {

@@ -1,10 +1,7 @@
-package com.xugu.hibernate;
+package mapper;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,25 +10,24 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.transform.Transformers;
 import org.junit.Test;
+import entity.User;
 
 /**
- * 数据库表操作(非实体类数据获取)
+ * 数据库表Dml操作
  * 
  * @author xugu-publish
  * @date 2019-02-01
  * @since 1.8
  *
  */
-public class DatabaseNativeTest {
+public class DatabaseDmlTest {
 
 	private Logger logger = Logger.getLogger(DatabaseNativeTest.class);
-
+	
 	/**
-	 * 建立会话
+	 * 插入表数据
 	 */
 	@Test
 	public void testInsert() {
@@ -41,33 +37,32 @@ public class DatabaseNativeTest {
 		// 加载
 		Configuration configuration = new Configuration().configure();
 		ServiceRegistry serviceRegistry = configuration.getStandardServiceRegistryBuilder().build();
+		// 创建Session工厂
 		sessionFaction = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
 		// 创建、打开会话
 		Session session = sessionFaction.openSession();
 		// 创建事务
-		Transaction transaction = session.beginTransaction();
-
+		Transaction tx = session.beginTransaction();
 		// 数据Bean
 		User user = new User();
 		user.setId(UUID.randomUUID().toString());
 		user.setName("测试用名");
 		user.setPassword("123456");
-		// 插入一条数据
+		// 更新数据
 		session.save(user);
 		// 提交事务
-		transaction.commit();
-		// 关闭工厂
-		session.close();
-		// 关闭工厂类
-		sessionFaction.close();
+		tx.commit();
 		logger.info("插入数据：" + user);
+		session.close();
+		sessionFaction.close();
 	}
 
 	/**
-	 * 获取实体表数据
+	 * 查询表数据
 	 */
-	@Test
+	@ Test
 	public void testSelect() {
+
 		// 创建工厂
 		SessionFactory sessionFaction = null;
 		// 加载
@@ -78,21 +73,58 @@ public class DatabaseNativeTest {
 		// 创建、打开会话
 		Session session = sessionFaction.openSession();
 
-		// 查询数据
-		String sql = "select * from usert";
+		// 指定条件查询
+		String hql = "FROM User AS U WHERE U.id=:id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", "401882cb68a6b5690168a6b56a590000");
+		List<User> users = query.list();
+		for (User user : users) {
+			logger.info("查询数据: " + user);
+		}
+	}
+
+	/**
+	 * 更新表数据
+	 */
+	@Test
+	public void testUpdate() {
+
+		// 创建工厂
+		SessionFactory sessionFaction = null;
+		// 加载
+		Configuration configuration = new Configuration().configure();
+		ServiceRegistry serviceRegistry = configuration.getStandardServiceRegistryBuilder().build();
+		// 创建Session工厂
+		sessionFaction = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
+		// 创建、打开会话
+		Session session = sessionFaction.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		// 指定条件查询
+		User user = null;
+		String sql = "select * from usert where id='401882cb68a6b5690168a6b56a590000'";
 		NativeQuery<User> query = session.createNativeQuery(sql, User.class);
 		List<User> list = query.getResultList();
-		for (User o : list) {
-			logger.info(o.getId() + "::" + o.getName() + "::" + o.getPassword());
+		for (User val : list) {
+			user = val;
+			logger.info("更新数据(更新前): " + user);
 		}
+			
+		// 更新数据
+		user.setPassword("新的密码");
+		session.update(user);
+		tx.commit();
+		logger.info("更新数据(更新后): " + user);
+		session.close();
+		sessionFaction.close();
 	}
 
 	/**
-	 * 获取非实体表数据
+	 * 删除表数据
 	 */
 	@Test
-	public void testStatis() {
-		String sql = "SELECT id as \"id\", count(id) as \"countId\" from USERT group by id";
+	public void testDelete() {
+
 		// 创建工厂
 		SessionFactory sessionFaction = null;
 		// 加载
@@ -102,14 +134,26 @@ public class DatabaseNativeTest {
 		sessionFaction = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
 		// 创建、打开会话
 		Session session = sessionFaction.openSession();
-
-		// 执行原生SQL语句
-		Query<DataCount> query = session.createNativeQuery(sql);
-		// SQL语句返回结果集封装为Bean
-		query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(DataCount.class));
-		List<DataCount> list = query.getResultList();
-		for (DataCount o : list) {
-			logger.info("非实体类数据：" + o);
-		}
+		Transaction tx = session.beginTransaction();
+		
+		// 数据Bean
+		User user = new User();
+		user.setId(UUID.randomUUID().toString());
+		user.setName("测试删除");
+		user.setPassword("密码");
+		// 更新数据
+		session.save(user);
+		// 提交事务
+		tx.commit();
+		logger.info("删除数据(删除前)：" + user);
+			
+		tx = session.beginTransaction();
+		user = session.get(User.class, user.getId());
+		session.delete(user);
+		tx.commit();
+		logger.info("删除数据(删除后): " + user);
+		session.close();
+		sessionFaction.close();
 	}
+	
 }
