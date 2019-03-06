@@ -7,7 +7,7 @@ Introduction
 --------------
 
 - git clone https://github.com/xugu-publish/xugu-hibernate-demo.git
-- cd xugu-mybatis-demo && mvn install
+- cd xugu-hibernate-demo && mvn install
 - have fun.
 
 ### Project Structure
